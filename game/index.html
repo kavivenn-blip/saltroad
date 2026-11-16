@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SALTROAD — carry the salt across the White Wastes</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #1a0f14; height: 100%; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  canvas { width: min(100vw, 177.78vh); height: min(100vh, 56.25vw); display: block; cursor: crosshair; image-rendering: auto; }
+</style>
+</head>
+<body>
+<canvas id="game" width="1024" height="576"></canvas>
+<script type="module">
+  import { boot } from './src/main.js';
+  import { stageShot } from './src/shots.js';
+  const game = boot(document.getElementById('game'));
+  const params = new URLSearchParams(location.search);
+  const shot = params.get('shot');
+  if (shot) {
+    const seed = parseInt(params.get('seed') || '1', 10) || 1;
+    stageShot(game, shot, seed);
+    requestAnimationFrame(() => requestAnimationFrame(() => { window.__shotReady = true; }));
+  }
+</script>
+</body>
+</html>
